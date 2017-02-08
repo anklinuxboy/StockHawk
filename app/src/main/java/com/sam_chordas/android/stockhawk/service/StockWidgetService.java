@@ -4,6 +4,8 @@ import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.Bundle;
+import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
@@ -11,6 +13,7 @@ import com.sam_chordas.android.stockhawk.R;
 import com.sam_chordas.android.stockhawk.data.QuoteColumns;
 import com.sam_chordas.android.stockhawk.data.QuoteProvider;
 import com.sam_chordas.android.stockhawk.data.StockWidgetItem;
+import com.sam_chordas.android.stockhawk.widget.StockHawkAppWidgetProvider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +25,7 @@ import java.util.List;
 public class StockWidgetService extends RemoteViewsService {
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
+        Log.d("TAG", "in remote views factory");
         return new ListRemoteViewsFactory(this.getApplicationContext(), intent);
     }
 }
@@ -44,6 +48,7 @@ class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
     @Override
     public void onCreate() {
+        System.out.println("Hello");
         Cursor cursor = context.getContentResolver().query(QuoteProvider.Quotes.CONTENT_URI,
                 null,
                 null,
@@ -74,6 +79,11 @@ class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
         RemoteViews rv = new RemoteViews(context.getPackageName(), R.layout.widget_list_item);
         rv.setTextViewText(R.id.stock_symbol, widgetItemList.get(position).getStockSymbol());
         rv.setTextViewText(R.id.stock_price, widgetItemList.get(position).getStockPrice());
+
+        Bundle extras = new Bundle();
+        extras.putInt(StockHawkAppWidgetProvider.EXTRA_ITEM, position);
+        Intent fillInIntent = new Intent();
+        fillInIntent.putExtras(extras);
 
         return rv;
     }
