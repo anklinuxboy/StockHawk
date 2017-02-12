@@ -25,7 +25,6 @@ import java.util.List;
 public class StockWidgetService extends RemoteViewsService {
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
-        Log.d("TAG", "in remote views factory");
         return new ListRemoteViewsFactory(this.getApplicationContext(), intent);
     }
 }
@@ -43,12 +42,11 @@ class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
     @Override
     public int getCount() {
-        return 0;
+        return widgetItemList.size();
     }
 
     @Override
     public void onCreate() {
-        System.out.println("Hello");
         Cursor cursor = context.getContentResolver().query(QuoteProvider.Quotes.CONTENT_URI,
                 null,
                 null,
@@ -65,9 +63,7 @@ class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
     }
 
     @Override
-    public void onDataSetChanged() {
-
-    }
+    public void onDataSetChanged() {}
 
     @Override
     public void onDestroy() {
