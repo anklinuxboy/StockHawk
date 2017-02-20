@@ -38,17 +38,6 @@ public class StockHawkAppWidgetProvider extends AppWidgetProvider {
     }
 
     @Override
-    public void onReceive(Context context, Intent intent) {
-        AppWidgetManager mgr = AppWidgetManager.getInstance(context);
-        if (intent.getAction().equals(TOAST_ACTION)) {
-            int appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
-                    AppWidgetManager.INVALID_APPWIDGET_ID);
-            int viewIndex = intent.getIntExtra(EXTRA_ITEM, 0);
-        }
-        super.onReceive(context, intent);
-    }
-
-    @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         for (int i = 0; i < appWidgetIds.length; i++) {
             Intent intent = new Intent(context, StockWidgetService.class);

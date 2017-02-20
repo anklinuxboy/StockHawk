@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import com.google.android.gms.gcm.TaskParams;
+import com.sam_chordas.android.stockhawk.widget.StockHawkAppWidgetProvider;
 
 /**
  * Created by sam_chordas on 10/1/15.

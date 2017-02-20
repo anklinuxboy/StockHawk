@@ -9,7 +9,7 @@ public class StockWidgetItem {
     private String stockPrice;
 
     public StockWidgetItem(String symbol, String price) {
-        this.stockSymbol = symbol;
+        this.stockSymbol = symbol.toUpperCase();
         this.stockPrice = price;
     }
 

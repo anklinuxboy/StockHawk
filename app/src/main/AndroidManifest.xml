@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <permission
         android:name="com.google.android.gcm.demo.permission.C2D_MESSAGE"
@@ -37,6 +38,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".ui.StocksMoreInfo"/>
+
         <service android:name="com.sam_chordas.android.stockhawk.service.StockTaskService"
             android:permission="com.google.android.gms.permission.BIND_NETWORK_TASK_SERVICE"
             android:exported="true">
@@ -51,7 +55,7 @@
             android:exported="false"/>
 
         <service android:name=".service.StockWidgetService"
-            android:permission="android.permission.BIND_REMOTE_VIEWS"/>
+            android:permission="android.permission.BIND_REMOTEVIEWS"/>
     </application>
 
 </manifest>

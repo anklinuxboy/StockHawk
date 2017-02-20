@@ -25,4 +25,9 @@
     <item name="android:textColor">@color/material_blue_500</item>
     <item name="android:textSize">@dimen/widget_text_size</item>
   </style>
+
+  <style name="MoreInfoTextStyle">
+    <item name="android:textColor">@color/material_blue_500</item>
+    <item name="android:textSize">@dimen/more_info_text_size</item>
+  </style>
 </resources>

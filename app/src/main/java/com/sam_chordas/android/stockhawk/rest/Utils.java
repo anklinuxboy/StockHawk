@@ -32,7 +32,7 @@ public class Utils {
           resultsArray = jsonObject.getJSONObject("results").getJSONArray("quote");
 
           if (resultsArray != null && resultsArray.length() != 0) {
-            for (int i = 0; i < resultsArray.length(); i++){
+            for (int i = 0; i < resultsArray.length(); i++) {
               jsonObject = resultsArray.getJSONObject(i);
               batchOperations.add(buildBatchOperation(jsonObject));
             }
@@ -94,7 +94,9 @@ public class Utils {
       JSONObject jsonObject = null;
       try {
           jsonObject = new JSONObject(response);
-          if (jsonObject != null && jsonObject.length() != 0 && !(((jsonObject.getJSONObject("query")).getJSONObject("results")).getJSONObject("quote")).getString("Bid").equals("null")) {
+          if (jsonObject != null && jsonObject.length() != 0 && !(((jsonObject
+                  .getJSONObject("query")).getJSONObject("results")).getJSONObject("quote"))
+                  .getString("Bid").equals("null")) {
               return true;
           }
       } catch (JSONException e) {

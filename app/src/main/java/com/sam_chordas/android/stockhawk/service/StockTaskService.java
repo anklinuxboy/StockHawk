@@ -24,6 +24,8 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
+import static android.R.id.input;
+
 /**
  * Created by sam_chordas on 9/30/15.
  * The GCMTask service is primarily for periodic tasks. However, OnRunTask can be called directly
@@ -36,6 +38,7 @@ public class StockTaskService extends GcmTaskService {
     private Context mContext;
     private StringBuilder mStoredSymbols = new StringBuilder();
     private boolean isUpdate;
+    String stockInput;
 
     public StockTaskService() {
     }
@@ -73,15 +76,7 @@ public class StockTaskService extends GcmTaskService {
             initQueryCursor = mContext.getContentResolver().query(QuoteProvider.Quotes.CONTENT_URI,
                     new String[]{"Distinct " + QuoteColumns.SYMBOL}, null,
                     null, null);
-            if (initQueryCursor.getCount() == 0 || initQueryCursor == null) {
-                // Init task. Populates DB with quotes for the symbols seen below
-                try {
-                    urlStringBuilder.append(
-                            URLEncoder.encode("\"YHOO\",\"AAPL\",\"GOOG\",\"MSFT\")", "UTF-8"));
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
-            } else if (initQueryCursor != null) {
+            if (initQueryCursor != null) {
                 DatabaseUtils.dumpCursor(initQueryCursor);
                 initQueryCursor.moveToFirst();
                 for (int i = 0; i < initQueryCursor.getCount(); i++) {
@@ -99,7 +94,7 @@ public class StockTaskService extends GcmTaskService {
         } else if (params.getTag().equals("add")) {
             isUpdate = false;
             // get symbol from params.getExtra and build query
-            String stockInput = params.getExtras().getString("symbol");
+            stockInput = params.getExtras().getString("symbol");
             try {
                 urlStringBuilder.append(URLEncoder.encode("\"" + stockInput + "\")", "UTF-8"));
             } catch (UnsupportedEncodingException e) {
