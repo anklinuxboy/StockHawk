@@ -78,6 +78,8 @@ public class Utils {
           jsonObject.getString("ChangeinPercent"), true));
       builder.withValue(QuoteColumns.CHANGE, truncateChange(change, false));
       builder.withValue(QuoteColumns.ISCURRENT, 1);
+      builder.withValue(QuoteColumns.CREATED, jsonObject.getString("LastTradeTime"));
+      builder.withValue(QuoteColumns.DATE, jsonObject.getString("LastTradeDate"));
       if (change.charAt(0) == '-'){
         builder.withValue(QuoteColumns.ISUP, 0);
       }else{
@@ -103,5 +105,28 @@ public class Utils {
           Log.e(LOG_TAG, e.toString());
       }
       return false;
+  }
+
+  public static int convertTo24HourFormat(String time) {
+    int convertedTime = -1;
+    if (time.contains("pm")) {
+      convertedTime = getCorrectTime(time);
+    } else if (time.contains("am")) {
+      convertedTime = getCorrectTime(time);
+    }
+
+    return convertedTime;
+  }
+
+  private static int getCorrectTime(String time) {
+    int convertedTime = -1;
+    if (time.length() == 7) {
+      convertedTime = Integer.parseInt(time.substring(0,2));
+      convertedTime = (convertedTime + 12) % 24;
+    } else if (time.length() == 6) {
+      convertedTime = Integer.parseInt(time.substring(0,1));
+    }
+
+    return convertedTime;
   }
 }

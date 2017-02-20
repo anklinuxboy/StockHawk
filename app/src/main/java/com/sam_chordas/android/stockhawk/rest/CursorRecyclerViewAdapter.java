@@ -17,6 +17,7 @@ public abstract class CursorRecyclerViewAdapter <VH extends RecyclerView.ViewHol
   private boolean dataIsValid;
   private int rowIdColumn;
   private DataSetObserver mDataSetObserver;
+
   public CursorRecyclerViewAdapter(Context context, Cursor cursor){
     mCursor = cursor;
     dataIsValid = cursor != null;
@@ -33,7 +34,7 @@ public abstract class CursorRecyclerViewAdapter <VH extends RecyclerView.ViewHol
 
   @Override
   public int getItemCount(){
-    if (dataIsValid && mCursor != null){
+    if (dataIsValid && mCursor != null) {
       return mCursor.getCount();
     }
     return 0;
@@ -64,7 +65,7 @@ public abstract class CursorRecyclerViewAdapter <VH extends RecyclerView.ViewHol
     onBindViewHolder(viewHolder, mCursor);
   }
 
-  public Cursor swapCursor(Cursor newCursor){
+  public Cursor swapCursor(Cursor newCursor) {
     if (newCursor == mCursor){
       return null;
     }
