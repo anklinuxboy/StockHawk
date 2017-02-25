@@ -76,7 +76,7 @@ public class StockTaskService extends GcmTaskService {
             initQueryCursor = mContext.getContentResolver().query(QuoteProvider.Quotes.CONTENT_URI,
                     new String[]{"Distinct " + QuoteColumns.SYMBOL}, null,
                     null, null);
-            if (initQueryCursor != null) {
+/*            if (initQueryCursor != null) {
                 DatabaseUtils.dumpCursor(initQueryCursor);
                 initQueryCursor.moveToFirst();
                 for (int i = 0; i < initQueryCursor.getCount(); i++) {
@@ -90,7 +90,7 @@ public class StockTaskService extends GcmTaskService {
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
-            }
+            }*/
         } else if (params.getTag().equals("add")) {
             isUpdate = false;
             // get symbol from params.getExtra and build query
