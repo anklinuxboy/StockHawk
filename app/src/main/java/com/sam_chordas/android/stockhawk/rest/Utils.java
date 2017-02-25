@@ -4,7 +4,14 @@ import android.content.ContentProviderOperation;
 import android.util.Log;
 import com.sam_chordas.android.stockhawk.data.QuoteColumns;
 import com.sam_chordas.android.stockhawk.data.QuoteProvider;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -128,5 +135,23 @@ public class Utils {
     }
 
     return convertedTime;
+  }
+
+  public static String getFormattedDate(String date) {
+    Calendar calendar = Calendar.getInstance();
+    SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
+    String formattedDate;
+    Date storedDate = null;
+    if (date == null) {
+      formattedDate = dateFormat.format(calendar.getTime());
+    } else {
+      try {
+        storedDate = dateFormat.parse(date);
+      } catch (ParseException e) {
+        Log.e(LOG_TAG, e.toString());
+      }
+      formattedDate = dateFormat.format(storedDate);
+    }
+    return formattedDate;
   }
 }
