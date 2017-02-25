@@ -49,8 +49,8 @@ class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
     public void onCreate() {
         Cursor cursor = context.getContentResolver().query(QuoteProvider.Quotes.CONTENT_URI,
                 null,
-                null,
-                null,
+                QuoteColumns.ISCURRENT + " = ?",
+                new String[]{"1"},
                 null);
         if (cursor != null) {
             while (cursor.moveToNext()) {
