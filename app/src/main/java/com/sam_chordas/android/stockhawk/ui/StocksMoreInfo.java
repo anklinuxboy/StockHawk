@@ -7,12 +7,12 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 import com.sam_chordas.android.stockhawk.R;
 import com.sam_chordas.android.stockhawk.data.QuoteColumns;
 import com.sam_chordas.android.stockhawk.data.QuoteProvider;
@@ -26,9 +26,8 @@ public class StocksMoreInfo extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor> {
 
     private String symbol;
-    private RelativeLayout emptyLayout;
-    private BarChart barChart;
-    private BarData data;
+    private LineChart lineChart;
+    private LineData data;
     private ArrayList<String> xAxisValues = new ArrayList<>();
 
     static final String[] PROJECTIONS = new String[] {
@@ -46,8 +45,7 @@ public class StocksMoreInfo extends AppCompatActivity implements
         symbol = intent.getStringExtra(stocksMoreInfoIntentKey);
 
         TextView moreInfoTextView = (TextView) findViewById(R.id.more_info_text);
-        barChart = (BarChart) findViewById(R.id.graph);
-        data = new BarData();
+        lineChart = (LineChart) findViewById(R.id.graph);
 
         if (symbol != null) {
             moreInfoTextView.setText(symbol.toUpperCase());
@@ -65,6 +63,8 @@ public class StocksMoreInfo extends AppCompatActivity implements
     // Check if cursor
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        ArrayList<Entry> yVals = new ArrayList<>();
+        LineDataSet set;
         int i = -1;
         if (cursor != null) {
             while (cursor.moveToNext()) {
@@ -76,12 +76,15 @@ public class StocksMoreInfo extends AppCompatActivity implements
                     xAxisValues.add(storedDate);
                     i++;
                 }
-                Entry entry = new Entry(xValue, bidPrice);
-                data.addEntry(entry, i);
+                yVals.add(new Entry(i, bidPrice));
             }
-
-            barChart.setData(data);
-            barChart.invalidate();
+            set = new LineDataSet(yVals, "Dataset");
+            set.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+            set.setCubicIntensity(0.1f);
+            set.setLineWidth(0.8f);
+            data = new LineData(set);
+            lineChart.setData(data);
+            lineChart.invalidate();0
             cursor.close();
         }
 
