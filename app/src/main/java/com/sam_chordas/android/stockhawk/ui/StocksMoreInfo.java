@@ -78,7 +78,6 @@ public class StocksMoreInfo extends AppCompatActivity implements
                 if (!xAxisValues.contains(storedDate)) {
                     xAxisValues.add(storedDate);
                     i++;
-                    System.out.println("i " + i + " date " + storedDate);
                 }
                 yVals.add(new Entry(i, bidPrice));
             }
