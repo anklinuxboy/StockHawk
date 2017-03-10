@@ -5,4 +5,5 @@
   <color name="material_red_700">#D50000</color>
   <color name="material_green_700">#00C853</color>
   <color name="material_gray">#424242</color>
+  <color name="more_info_background">#F3E5F5</color>
 </resources>

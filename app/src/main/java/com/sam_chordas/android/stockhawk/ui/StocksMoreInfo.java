@@ -10,9 +10,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.sam_chordas.android.stockhawk.R;
 import com.sam_chordas.android.stockhawk.data.QuoteColumns;
 import com.sam_chordas.android.stockhawk.data.QuoteProvider;
@@ -75,16 +78,32 @@ public class StocksMoreInfo extends AppCompatActivity implements
                 if (!xAxisValues.contains(storedDate)) {
                     xAxisValues.add(storedDate);
                     i++;
+                    System.out.println("i " + i + " date " + storedDate);
                 }
                 yVals.add(new Entry(i, bidPrice));
             }
-            set = new LineDataSet(yVals, "Dataset");
+
+            IAxisValueFormatter formatter = new IAxisValueFormatter() {
+                @Override
+                public String getFormattedValue(float value, AxisBase axis) {
+                    if (value < 0)
+                        value = 0;
+                    else if (value >= xAxisValues.size())
+                        value = xAxisValues.size() - 1;
+                    return xAxisValues.get((int) value);
+                }
+            };
+            set = new LineDataSet(yVals, "Stocks");
             set.setMode(LineDataSet.Mode.CUBIC_BEZIER);
             set.setCubicIntensity(0.1f);
             set.setLineWidth(0.8f);
             data = new LineData(set);
+            XAxis xAxis = lineChart.getXAxis();
+            xAxis.setGranularity(1f);
+            xAxis.setValueFormatter(formatter);
+            xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
             lineChart.setData(data);
-            lineChart.invalidate();0
+            lineChart.invalidate();
             cursor.close();
         }
 
