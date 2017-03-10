@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.os.RemoteException;
 import android.util.Log;
+
 import com.google.android.gms.gcm.GcmNetworkManager;
 import com.google.android.gms.gcm.GcmTaskService;
 import com.google.android.gms.gcm.TaskParams;
@@ -17,14 +18,9 @@ import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-
-import static android.R.id.input;
 
 /**
  * Created by sam_chordas on 9/30/15.
@@ -76,21 +72,22 @@ public class StockTaskService extends GcmTaskService {
             initQueryCursor = mContext.getContentResolver().query(QuoteProvider.Quotes.CONTENT_URI,
                     new String[]{"Distinct " + QuoteColumns.SYMBOL}, null,
                     null, null);
-/*            if (initQueryCursor != null) {
+            if (initQueryCursor != null) {
                 DatabaseUtils.dumpCursor(initQueryCursor);
-                initQueryCursor.moveToFirst();
-                for (int i = 0; i < initQueryCursor.getCount(); i++) {
-                    mStoredSymbols.append("\"" +
-                            initQueryCursor.getString(initQueryCursor.getColumnIndex("symbol")) + "\",");
-                    initQueryCursor.moveToNext();
+                if (initQueryCursor.moveToFirst()) {
+                    for (int i = 0; i < initQueryCursor.getCount(); i++) {
+                        mStoredSymbols.append("\"" +
+                                initQueryCursor.getString(initQueryCursor.getColumnIndex("symbol")) + "\",");
+                        initQueryCursor.moveToNext();
+                    }
+                    mStoredSymbols.replace(mStoredSymbols.length() - 1, mStoredSymbols.length(), ")");
+                    try {
+                        urlStringBuilder.append(URLEncoder.encode(mStoredSymbols.toString(), "UTF-8"));
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
                 }
-                mStoredSymbols.replace(mStoredSymbols.length() - 1, mStoredSymbols.length(), ")");
-                try {
-                    urlStringBuilder.append(URLEncoder.encode(mStoredSymbols.toString(), "UTF-8"));
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
-            }*/
+            }
         } else if (params.getTag().equals("add")) {
             isUpdate = false;
             // get symbol from params.getExtra and build query

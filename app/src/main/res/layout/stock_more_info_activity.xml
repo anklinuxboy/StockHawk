@@ -14,17 +14,12 @@
         tools:text="GOOG"
         />
 
-    <com.jjoe64.graphview.GraphView
+
+    <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/graph"
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:layout_width="match_parent"
         android:layout_height="@dimen/graph_height"
         android:visibility="visible"
-        />
-
-    <include
-        android:id="@+id/empty_info"
-        layout="@layout/empty_view"
-        android:visibility="gone"
-        tools:visibility="visible"/>
+            />
 </LinearLayout>

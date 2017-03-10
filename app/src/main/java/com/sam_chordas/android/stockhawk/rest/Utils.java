@@ -2,19 +2,15 @@ package com.sam_chordas.android.stockhawk.rest;
 
 import android.content.ContentProviderOperation;
 import android.util.Log;
+
 import com.sam_chordas.android.stockhawk.data.QuoteColumns;
 import com.sam_chordas.android.stockhawk.data.QuoteProvider;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 public class Utils {
 
@@ -103,10 +99,18 @@ public class Utils {
       JSONObject jsonObject = null;
       try {
           jsonObject = new JSONObject(response);
-          if (jsonObject != null && jsonObject.length() != 0 && !(((jsonObject
-                  .getJSONObject("query")).getJSONObject("results")).getJSONObject("quote"))
-                  .getString("Bid").equals("null")) {
+          if (jsonObject != null && jsonObject.length() != 0) {
+            JSONObject results = jsonObject.getJSONObject("query").getJSONObject("results");
+            try {
+              JSONArray quotes = results.getJSONArray("quote");
               return true;
+            } catch (JSONException e) {
+              Log.e(LOG_TAG, e.toString());
+              JSONObject quote = results.getJSONObject("quote");
+              if (!quote.getString("Bid").equals("null")) {
+                return true;
+              }
+            }
           }
       } catch (JSONException e) {
           Log.e(LOG_TAG, e.toString());
@@ -117,41 +121,43 @@ public class Utils {
   public static int convertTo24HourFormat(String time) {
     int convertedTime = -1;
     if (time.contains("pm")) {
-      convertedTime = getCorrectTime(time);
-    } else if (time.contains("am")) {
-      convertedTime = getCorrectTime(time);
-    }
-
-    return convertedTime;
-  }
-
-  private static int getCorrectTime(String time) {
-    int convertedTime = -1;
-    if (time.length() == 7) {
-      convertedTime = Integer.parseInt(time.substring(0,2));
-      convertedTime = (convertedTime + 12) % 24;
-    } else if (time.length() == 6) {
-      convertedTime = Integer.parseInt(time.substring(0,1));
-    }
-
-    return convertedTime;
-  }
-
-  public static String getFormattedDate(String date) {
-    Calendar calendar = Calendar.getInstance();
-    SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
-    String formattedDate;
-    Date storedDate = null;
-    if (date == null) {
-      formattedDate = dateFormat.format(calendar.getTime());
-    } else {
-      try {
-        storedDate = dateFormat.parse(date);
-      } catch (ParseException e) {
-        Log.e(LOG_TAG, e.toString());
+      if (time.length() == 6) {
+        convertedTime = Integer.parseInt(time.substring(0,1)) + 12;
+      } else if (time.length() == 7) {
+        if (time.substring(0,2).equals("12")) {
+          convertedTime = 12;
+        } else {
+          convertedTime = (Integer.parseInt(time.substring(0,2)) + 12) % 24;
+        }
       }
-      formattedDate = dateFormat.format(storedDate);
+    } else if (time.contains("am")) {
+      if (time.length() == 6) {
+        convertedTime = Integer.parseInt(time.substring(0,1)) + 12;
+      } else if (time.length() == 7) {
+        convertedTime = (Integer.parseInt(time.substring(0,2)) + 12) % 24;
+      }
     }
-    return formattedDate;
+
+    return convertedTime;
+  }
+
+  private static String getParsedString(String str) {
+    return str.replaceAll("[^0-9]+", " ");
+  }
+
+  public static int getXValue(String time, String storedDate) {
+    String parsedTime = getParsedString(time);
+    String parsedDate = getParsedString(storedDate);
+    int xValue = getIntFromString(parsedDate) + getIntFromString(parsedTime);
+    return xValue;
+  }
+
+  private static int getIntFromString(String str) {
+    String[] strInts = str.split(" ");
+    int result = 0;
+    for (String s : strInts) {
+      result += Integer.parseInt(s);
+    }
+    return result;
   }
 }
