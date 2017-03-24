@@ -7,9 +7,10 @@
   <string name="action_change_units">Change Units</string>
   <string name="symbol_search">Symbol Search</string>
   <string name="content_test">Search for a Stock Symbol</string>
-  <string name="input_hint">FB</string>
+  <string name="input_hint" translatable="false">FB</string>
   <string name="change_units_desc">Change Units</string>
   <string name="network_toast">Uh-oh! This app requires an internet connection</string>
+  <string name="bad_stock">This stock does not exist</string>
   <string name="stock_info_not_available">No stocks available for today.</string>
   <string name="tag" translatable="false">tag</string>
   <string name="init" translatable="false">init</string>
@@ -18,4 +19,6 @@
   <string name="add" translatable="false">add</string>
   <string name="stock_already_saved">This stock is already saved!</string>
   <string name="input_prefill"></string>
+  <string name="placeholder_stock_symbol">GOOG</string>
+  <string name="placeholder_stock_price">100</string>
 </resources>
